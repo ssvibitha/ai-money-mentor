@@ -1,4 +1,4 @@
-# 🔥 FIRE Planner & 💸 Tax Wizard
+#  AI Money Mentor
 
 ### *AI-Powered Financial Planning for Smarter Decisions*
 
