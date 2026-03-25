@@ -1,70 +1,142 @@
-# Getting Started with Create React App
+# 🔥 FIRE Planner & 💸 Tax Wizard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### *AI-Powered Financial Planning for Smarter Decisions*
 
-## Available Scripts
+<p align="center">
+  <b>Plan your financial independence. Optimize your taxes. All in one place.</b>
+</p>
 
-In the project directory, you can run:
+---
 
-### `npm start`
+##  Live Preview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> *(AI Money Mentor)*
+> https://ai-money-mentor-one.vercel.app/
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## Overview
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**FIRE Planner & Tax Wizard** is a modern fintech web application that leverages AI to help users:
 
-### `npm run build`
+* 📈 Plan their journey to **Financial Independence & Early Retirement (FIRE)**
+* 💰 Compare **tax regimes** and maximize savings
+* 📊 Visualize financial insights through intuitive dashboards
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Built with a focus on **clarity, usability, and real-world financial logic**, this app transforms raw inputs into actionable insights.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+---
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+##  Key Features
 
-### `npm run eject`
+###  FIRE Planner
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Personalized SIP calculation
+* Smart asset allocation (Equity / Debt / Gold)
+* Long-term wealth projection (milestones)
+* Actionable financial advice
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+###  Tax Wizard
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Old vs New tax regime comparison
+* Accurate deduction handling (80C, 80D, Home Loan)
+* Instant recommendation engine
+* Clear savings breakdown
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+##  How It Works
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```mermaid id="flow001"
+flowchart TD
+A[User Input] --> B[Prompt Generation]
+B --> C[AI Model (Mistral)]
+C --> D[Structured JSON Response]
+D --> E[UI Rendering]
+E --> F[Insights & Decisions]
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+##  Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| Category       | Technology                    |
+| -------------- | ----------------------------- |
+| Frontend       | React (Functional Components) |
+| Styling        | Tailwind CSS                  |
+| Charts         | Recharts                      |
+| AI Integration | HuggingFace (Mistral)         |
+| State Mgmt     | React Hooks (useState)        |
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Getting Started
 
-### Advanced Configuration
+### 1. Clone the Repository
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```bash id="clone001"
+git clone https://github.com/ssvibitha/ai-money-mentor.git
+cd ai-money-mentor
+```
 
-### Deployment
+### 2. Install Dependencies
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash id="install001"
+npm install
+```
 
-### `npm run build` fails to minify
+### 3. Run the App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash id="run001"
+npm run dev
+```
+
+---
+
+##  Core Concepts
+
+* **Structured AI Output (JSON-first design)**
+* **Separation of concerns (UI ↔ AI logic)**
+* **Data-driven UI rendering**
+* **Fintech-grade UX patterns**
+
+---
+
+## 🔮 Future Enhancements
+
+* 🔐 Authentication & user dashboards
+* 📄 Export reports (PDF/CSV)
+* 📊 Advanced projections (inflation-adjusted FIRE)
+* 🔗 Real-time financial APIs
+* 📅 Goal tracking & reminders
+
+---
+
+##  Disclaimer
+
+> This application provides AI-generated financial insights for educational purposes only.
+> It should not be considered professional financial or tax advice.
+
+---
+
+##  Contributing
+
+Contributions are welcome!
+
+```bash id="contribute001"
+# Fork the repo
+# Create a new branch
+git checkout -b feature/your-feature
+
+# Commit changes
+git commit -m "Add feature"
+
+# Push and open PR
+git push origin feature/your-feature
+```
+
+---
+
