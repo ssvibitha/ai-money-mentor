@@ -45,17 +45,6 @@
 
 ---
 
-##  How It Works
-
-```mermaid
-flowchart LR
-A[User Input] --> B[AI Processing (Mistral)]
-B --> C[Structured JSON]
-C --> D[Dashboard Insights]
-```
-
----
-
 ##  Tech Stack
 
 * **Frontend:** React + Tailwind
