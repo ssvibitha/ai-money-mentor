@@ -1,142 +1,88 @@
 #  AI Money Mentor
 
-### *AI-Powered Financial Planning for Smarter Decisions*
+### *AI-Powered Financial Planning for Everyone*
 
-<p align="center">
-  <b>Plan your financial independence. Optimize your taxes. All in one place.</b>
-</p>
+ **Live Demo:** https://ai-money-mentor-one.vercel.app/
 
 ---
 
-##  Live Preview
+##  Problem
 
-> *(AI Money Mentor)*
-> https://ai-money-mentor-one.vercel.app/
-
----
-
-## Overview
-
-**FIRE Planner & Tax Wizard** is a modern fintech web application that leverages AI to help users:
-
-* 📈 Plan their journey to **Financial Independence & Early Retirement (FIRE)**
-* 💰 Compare **tax regimes** and maximize savings
-* 📊 Visualize financial insights through intuitive dashboards
-
-Built with a focus on **clarity, usability, and real-world financial logic**, this app transforms raw inputs into actionable insights.
+* 95% of Indians lack a financial plan
+* Financial advisors are expensive and inaccessible
+* Tax and investment decisions are complex for beginners
 
 ---
 
-##  Key Features
+##  Solution
 
-###  FIRE Planner
+**AI Money Mentor** is a web app that acts as a **personal AI financial advisor**, helping users:
 
-* Personalized SIP calculation
-* Smart asset allocation (Equity / Debt / Gold)
-* Long-term wealth projection (milestones)
-* Actionable financial advice
+* Plan for **Financial Independence (FIRE)**
+* Optimize taxes across regimes
+* Make informed investment decisions with clear insights
+
+---
+
+##  Core Features
+
+### FIRE Planner
+
+* Calculates required SIP
+* Suggests asset allocation
+* Projects long-term wealth growth
 
 ###  Tax Wizard
 
-* Old vs New tax regime comparison
-* Accurate deduction handling (80C, 80D, Home Loan)
-* Instant recommendation engine
-* Clear savings breakdown
+* Compares Old vs New tax regime
+* Identifies missed deductions
+* Recommends optimal tax strategy
+
+###  Insight Dashboard
+
+* Interactive financial visualizations
+* Decision-focused, clutter-free UI
 
 ---
 
 ##  How It Works
 
-```mermaid id="flow001"
-flowchart TD
-A[User Input] --> B[Prompt Generation]
-B --> C[AI Model (Mistral)]
-C --> D[Structured JSON Response]
-D --> E[UI Rendering]
-E --> F[Insights & Decisions]
+```mermaid
+flowchart LR
+A[User Input] --> B[AI Processing (Mistral)]
+B --> C[Structured JSON]
+C --> D[Dashboard Insights]
 ```
 
 ---
 
 ##  Tech Stack
 
-| Category       | Technology                    |
-| -------------- | ----------------------------- |
-| Frontend       | React (Functional Components) |
-| Styling        | Tailwind CSS                  |
-| Charts         | Recharts                      |
-| AI Integration | HuggingFace (Mistral)         |
-| State Mgmt     | React Hooks (useState)        |
+* **Frontend:** React + Tailwind
+* **Charts:** Recharts
+* **AI:** Mistral (HuggingFace)
+* **Architecture:** JSON-first AI pipeline
 
 ---
 
+##  Getting Started
 
----
-
-## Getting Started
-
-### 1. Clone the Repository
-
-```bash id="clone001"
+```bash
 git clone https://github.com/ssvibitha/ai-money-mentor.git
 cd ai-money-mentor
-```
-
-### 2. Install Dependencies
-
-```bash id="install001"
 npm install
-```
-
-### 3. Run the App
-
-```bash id="run001"
 npm run dev
 ```
 
 ---
 
-##  Core Concepts
+##  Future Improvements
 
-* **Structured AI Output (JSON-first design)**
-* **Separation of concerns (UI ↔ AI logic)**
-* **Data-driven UI rendering**
-* **Fintech-grade UX patterns**
-
----
-
-## 🔮 Future Enhancements
-
-* 🔐 Authentication & user dashboards
-* 📄 Export reports (PDF/CSV)
-* 📊 Advanced projections (inflation-adjusted FIRE)
-* 🔗 Real-time financial APIs
-* 📅 Goal tracking & reminders
+* User authentication & history
+* Inflation-adjusted FIRE projections
+* PDF financial reports
+* Real-time financial data APIs
 
 ---
 
-##  Disclaimer
-
-> This application provides AI-generated financial insights for educational purposes only.
-> It should not be considered professional financial or tax advice.
-
----
-
-##  Contributing
-
-Contributions are welcome!
-
-```bash id="contribute001"
-# Fork the repo
-# Create a new branch
-git checkout -b feature/your-feature
-
-# Commit changes
-git commit -m "Add feature"
-
-# Push and open PR
-git push origin feature/your-feature
-```
-
----
 
