@@ -79,7 +79,7 @@ const calculateMilestones = (params) => {
   return data;
 };
 
-function MainApp() {
+function MainApp({ setIsLoggedIn }) {
   const [age, setAge] = useState('35');
   const [monthlyIncome, setMonthlyIncome] = useState('90000');
   const [monthlyExpenses, setMonthlyExpenses] = useState('40000');
@@ -141,7 +141,7 @@ function MainApp() {
 
     try {
       // Use AI for personalized advice
-      const formData = { age, income: monthlyIncome, expenses: monthlyExpenses, savings: currentSavings, goal: financialGoal, risk };
+      const formData = { age, income: monthlyIncome, expenses: monthlyExpenses, savings: currentSavings, goal: financialGoal, risk: riskAppetite };
       const prompt = buildFIREPrompt(formData);
       const aiResult = await callLLM(prompt);
 
@@ -270,6 +270,13 @@ function MainApp() {
     } catch (error) {
       console.error('Download failed:', error);
     }
+  };
+
+  const onRecalculate = () => {
+    setResult(null);
+    setError('');
+    setProgressMessage('Recalculating plan...');
+    onGeneratePlan();
   };
 
   return (

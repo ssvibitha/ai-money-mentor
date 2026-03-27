@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={isLoggedIn ? <Navigate to="/app" /> : <Login onLogin={handleLogin} />} />
-        <Route path="/app" element={isLoggedIn ? <MainApp /> : <Navigate to="/login" />} />
+        <Route path="/app" element={isLoggedIn ? <MainApp setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
         <Route path="/tax" element={isLoggedIn ? <TaxWizard /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
