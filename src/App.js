@@ -8,11 +8,6 @@ import TaxWizard from './components/TaxWizard';
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleGetStarted = () => {
-    // Navigate to login or directly to main if no auth
-    window.location.href = '/login';
-  };
-
   const handleLogin = () => {
     setIsLoggedIn(true);
   };
