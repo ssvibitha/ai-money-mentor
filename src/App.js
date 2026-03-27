@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Hero from './components/Hero';
+import LandingPage from './components/LandingPage';
 import Login from './components/Login';
 import MainApp from './components/MainApp';
 import TaxWizard from './components/TaxWizard';
@@ -20,7 +20,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hero onGetStarted={handleGetStarted} />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={isLoggedIn ? <Navigate to="/app" /> : <Login onLogin={handleLogin} />} />
         <Route path="/app" element={isLoggedIn ? <MainApp /> : <Navigate to="/login" />} />
         <Route path="/tax" element={isLoggedIn ? <TaxWizard /> : <Navigate to="/login" />} />
