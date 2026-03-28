@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { callLLM } from '../utils/hf';
-import { buildTaxPrompt } from '../utils/prompts';
+import Navbar from '../components/Navbar';
 
 const TaxWizard = () => {
   const [formData, setFormData] = useState({
@@ -24,9 +23,15 @@ const TaxWizard = () => {
     setIsLoading(true);
 
     try {
-      const prompt = buildTaxPrompt(formData);
-      const aiResult = await callLLM(prompt);
-      setResult(aiResult);
+      // Use backend API instead of direct HF call
+      const response = await fetch('http://localhost:5000/api/ai/analyze-tax', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formData }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'AI analysis failed');
+      setResult(data);
     } catch (err) {
       setError(err.message || 'Failed to generate tax advice. Please try again.');
     } finally {
@@ -36,23 +41,7 @@ const TaxWizard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-softgreen to-white pb-8">
-      <header className="border-b border-slate-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold">T</div>
-            <div>
-              <h1 className="text-xl font-bold text-slate-800">Tax Wizard</h1>
-              <p className="text-xs text-slate-500">AI-Powered Tax Optimization</p>
-            </div>
-          </div>
-          <button
-            onClick={() => window.history.back()}
-            className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-          >
-            Back to Planner
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
       <main className="mx-auto max-w-4xl px-4 pt-8 sm:px-6">
         <section className="rounded-2xl bg-white p-6 shadow-soft sm:p-10">

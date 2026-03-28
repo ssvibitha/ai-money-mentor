@@ -1,23 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './LandingPage.css';
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "./Footer.css";
+import './LandingPage.css';
+import "../components/Footer.css";
+
 const LandingPage = () => {
   return (
     <div className="landing-container">
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <div className="navbar-left">
-          <img src="/logo.jpeg" alt="Vittora Logo" className="navbar-logo" />
-          <span className="navbar-brand">Vittora</span>
-        </div>
-        <div className="navbar-right">
-          <Link to="/guest" className="btn btn-outline">Try without login</Link>
-          <Link to="/login" className="btn btn-outline">Login</Link>
-          <Link to="/signup" className="btn btn-primary">Sign Up</Link>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* HERO SECTION */}
       <section className="hero">
