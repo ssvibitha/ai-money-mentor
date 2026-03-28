@@ -1,4 +1,4 @@
-/* Footer.css */
+/* Footer.css - Updated with visibility fixes */
 .footer {
   background: #1a1a2e;
   color: #ffffff;
@@ -34,10 +34,18 @@
 }
 
 .footer-logo {
-  width: 40px;
   height: 40px;
+  width: auto;
   border-radius: 8px;
-  object-fit: cover;
+  object-fit: contain;
+  display: block;
+}
+
+/* Make sure the image isn't being hidden by any parent */
+.footer-brand img {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .footer-name {
@@ -73,16 +81,37 @@
   color: #ffffff;
 }
 
+/* Home link stays white when active */
 .footer-link.active {
   color: #60a5fa;
   font-weight: 500;
 }
 
-/* Disclaimer */
+/* Override for Home link - always white */
+.footer-link:first-child {
+  color: #d1d5db;
+}
+
+.footer-link:first-child:hover {
+  color: #ffffff;
+}
+
+/* Copyright */
+.footer-bottom {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.copyright {
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+/* Disclaimer - Below Copyright */
 .footer-disclaimer-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
   padding: 0 1rem;
 }
 
@@ -92,19 +121,6 @@
   line-height: 1.5;
   text-align: center;
   max-width: 600px;
-}
-
-/* Copyright */
-.footer-bottom {
-  display: flex;
-  justify-content: center;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.copyright {
-  color: #6b7280;
-  font-size: 0.75rem;
 }
 
 /* Responsive Design */
@@ -157,10 +173,6 @@
   .copyright,
   .footer-disclaimer {
     color: #9ca3af;
-  }
-
-  .footer-bottom {
-    border-top-color: #e5e7eb;
   }
 }
 
