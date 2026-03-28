@@ -113,16 +113,16 @@ function calculateTaxes(formData) {
   const special = Number(formData.special) || 0;
   const sec80cRaw = Number(formData.section80c) || 0;
   const sec80dRaw = Number(formData.section80d) || 0;
-  
+
   const totalIncome = basic + hra + special;
   const actual80c = Math.min(sec80cRaw, 150000);
   const actual80d = Math.min(sec80dRaw, 25000);
   const stdDeduction = 50000;
-  
+
   // Old Regime Taxable
   let oldTaxable = totalIncome - actual80c - actual80d - stdDeduction;
-  if(oldTaxable < 0) oldTaxable = 0;
-  
+  if (oldTaxable < 0) oldTaxable = 0;
+
   // Old Regime Calculation
   let oldTax = 0;
   if (oldTaxable > 1000000) {
@@ -132,33 +132,33 @@ function calculateTaxes(formData) {
   } else if (oldTaxable > 250000) {
     oldTax += (oldTaxable - 250000) * 0.05;
   }
-  if(oldTaxable <= 500000) oldTax = 0; // 87A rebate
-  
+  if (oldTaxable <= 500000) oldTax = 0; // 87A rebate
+
   // New Regime Taxable (only std deduction applies)
   let newTaxable = totalIncome - stdDeduction;
-  if(newTaxable < 0) newTaxable = 0;
-  
+  if (newTaxable < 0) newTaxable = 0;
+
   // New Regime Calculation (FY 2024-25)
   let newTax = 0;
   if (newTaxable > 1500000) {
-      newTax += (newTaxable - 1500000) * 0.3 + 150000;
+    newTax += (newTaxable - 1500000) * 0.3 + 150000;
   } else if (newTaxable > 1200000) {
-      newTax += (newTaxable - 1200000) * 0.2 + 90000;
+    newTax += (newTaxable - 1200000) * 0.2 + 90000;
   } else if (newTaxable > 900000) {
-      newTax += (newTaxable - 900000) * 0.15 + 45000;
+    newTax += (newTaxable - 900000) * 0.15 + 45000;
   } else if (newTaxable > 600000) {
-      newTax += (newTaxable - 600000) * 0.1 + 15000;
+    newTax += (newTaxable - 600000) * 0.1 + 15000;
   } else if (newTaxable > 300000) {
-      newTax += (newTaxable - 300000) * 0.05;
+    newTax += (newTaxable - 300000) * 0.05;
   }
-  if(newTaxable <= 700000) newTax = 0; // 87A rebate
+  if (newTaxable <= 700000) newTax = 0; // 87A rebate
 
   const oldTotalDeductions = actual80c + actual80d + stdDeduction;
   const newTotalDeductions = stdDeduction;
-  
+
   const bestRegime = oldTax <= newTax ? "old" : "new";
   const savings = Math.abs(oldTax - newTax);
-  
+
   return {
     income: totalIncome,
     old_regime: { taxable_income: oldTaxable, tax_payable: oldTax, deductions_used: oldTotalDeductions },
@@ -177,7 +177,7 @@ app.post('/api/tax/calculate', (req, res) => {
 app.post('/api/ai/analyze-tax', async (req, res) => {
   const { formData } = req.body;
   const taxData = calculateTaxes(formData || {});
-  
+
   const prompt = `User income: ₹${taxData.income}, old regime tax: ₹${taxData.old_regime.tax_payable}, new regime tax: ₹${taxData.new_regime.tax_payable}.
 Explain which tax regime is better and suggest how to reduce tax legally in India. 
 Keep reasoning simple and actionable (max 5-6 lines). 
@@ -205,21 +205,21 @@ Respond ONLY as valid JSON:
     const text = response.data.choices?.[0]?.message?.content;
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error("No JSON found in response");
-    
+
     // Mix AI suggestions with deterministic math calculations
     const aiData = JSON.parse(jsonMatch[0]);
     res.json({
-        ...taxData,
-        ai_advice: aiData.explanation,
-        ai_suggestions: aiData.suggestions || []
+      ...taxData,
+      ai_advice: aiData.explanation,
+      ai_suggestions: aiData.suggestions || []
     });
   } catch (error) {
     console.error('Tax AI analysis failed:', error.response ? error.response.data : error.message);
     // If AI fails gracefully fallback to Math defaults
     res.json({
-        ...taxData,
-        ai_advice: "AI couldn't generate advice right now. Please rely on the basic calculations.",
-        ai_suggestions: ["Take advantage of 80C by investing in ELSS or PPF.", "Claim 80D for family health insurance."]
+      ...taxData,
+      ai_advice: "AI couldn't generate advice right now. Please rely on the basic calculations.",
+      ai_suggestions: ["Take advantage of 80C by investing in ELSS or PPF.", "Claim 80D for family health insurance."]
     });
   }
 });
@@ -262,7 +262,7 @@ Respond ONLY as valid JSON:
     const response = await axios.post(
       'https://router.huggingface.co/v1/chat/completions',
       {
-        model: 'mistralai/Mistral-7B-Instruct-v0.2',
+        model: 'Qwen/Qwen2.5-72B-Instruct',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 1000,
         temperature: 0.3,

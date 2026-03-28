@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Navbar from '../components/Navbar';
 import './MoneyScore.css';
 
 const questions = [
@@ -142,9 +143,9 @@ const MoneyScore = () => {
   };
 
   const getScoreBand = (score) => {
-    if (score <= 40) return { color: 'text-red-500', bg: 'bg-red-500', text: 'Needs urgent attention', ring: '#ef4444' };
-    if (score <= 70) return { color: 'text-amber-500', bg: 'bg-amber-500', text: 'On the right track', ring: '#f59e0b' };
-    return { color: 'text-green-500', bg: 'bg-green-500', text: 'Financially healthy', ring: '#10b981' };
+    if (score <= 40) return { color: 'text-red-700', bg: 'bg-red-100', text: 'Poor', ring: '#ef4444' };
+    if (score <= 70) return { color: 'text-amber-700', bg: 'bg-amber-100', text: 'Average', ring: '#f59e0b' };
+    return { color: 'text-emerald-700', bg: 'bg-emerald-100', text: 'Excellent', ring: '#10b981' };
   };
 
   // Render Quiz
@@ -154,12 +155,14 @@ const MoneyScore = () => {
     const allAnswered = Object.keys(answers).length === questions.length;
 
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <Navbar />
+        <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
           
-          <div className="bg-indigo-600 px-6 py-8 text-center text-white">
+          <div className="bg-emerald-600 px-6 py-8 text-center text-white">
             <h1 className="text-3xl font-extrabold tracking-tight">Money Health Score</h1>
-            <p className="mt-2 text-indigo-200">Take this 60-second quiz to discover your financial wellness.</p>
+            <p className="mt-2 text-emerald-200">Take this 60-second quiz to discover your financial wellness.</p>
           </div>
 
           <div className="p-8">
@@ -170,14 +173,14 @@ const MoneyScore = () => {
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div 
-                  className="bg-indigo-600 h-2 rounded-full transition-all duration-300 ease-out" 
+                  className="bg-emerald-600 h-2 rounded-full transition-all duration-300 ease-out" 
                   style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
                 ></div>
               </div>
             </div>
 
             <div key={q.id} className="slide-up">
-              <h2 className="text-sm font-semibold text-indigo-600 tracking-wide uppercase">{q.title}</h2>
+              <h2 className="text-sm font-semibold text-emerald-600 tracking-wide uppercase">{q.title}</h2>
               <h3 className="mt-2 text-2xl font-bold text-gray-900 mb-6">{q.question}</h3>
               
               <div className="space-y-3">
@@ -187,8 +190,8 @@ const MoneyScore = () => {
                     onClick={() => handleOptionSelect(q.id, opt)}
                     className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all duration-200 option-card ${
                       answers[q.id]?.text === opt.text
-                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
-                        : 'border-gray-200 hover:border-indigo-300 text-gray-700'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
+                        : 'border-gray-200 hover:border-emerald-300 text-gray-700'
                     }`}
                   >
                     <span className="font-medium">{opt.text}</span>
@@ -210,7 +213,7 @@ const MoneyScore = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={!allAnswered || isSubmitting}
-                  className="flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                  className="flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
                 >
                   {isSubmitting ? (
                     <><svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...</>
@@ -228,6 +231,7 @@ const MoneyScore = () => {
             </div>
           </div>
         </div>
+        </div>
       </div>
     );
   }
@@ -241,7 +245,9 @@ const MoneyScore = () => {
   const offset = circumference - (result.score / 100) * circumference;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
+      <Navbar />
+      <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8 fade-in">
         
         <div className="text-center mb-10">
@@ -277,12 +283,11 @@ const MoneyScore = () => {
                 />
               </svg>
               <div className="absolute flex flex-col items-center">
-                <span className="text-5xl font-black text-gray-900">{result.score}</span>
-                <span className="text-sm font-medium text-gray-500 mt-1">/ 100</span>
+                <span className="text-5xl font-black text-gray-900 mb-1">{result.score}</span>
+                <div className={`px-3 py-1 rounded-full font-bold text-xs ${band.bg} ${band.color}`}>
+                  {band.text}
+                </div>
               </div>
-            </div>
-            <div className={`px-4 py-2 rounded-full font-bold text-sm bg-opacity-10 ${band.color} bg-current`}>
-              {band.text}
             </div>
           </div>
 
@@ -290,12 +295,12 @@ const MoneyScore = () => {
           <div className="col-span-1 md:col-span-2 space-y-8">
             {/* Top Priority */}
             {result.aiAnalysis?.top_priority && (
-              <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 shadow-lg text-white slide-up" style={{ animationDelay: '0.1s' }}>
+              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 shadow-lg text-white slide-up" style={{ animationDelay: '0.1s' }}>
                 <div className="flex items-center mb-3">
                   <span className="text-2xl mr-3">⭐</span>
                   <h3 className="text-xl font-bold">Top Priority</h3>
                 </div>
-                <p className="text-indigo-100 text-lg">{result.aiAnalysis.top_priority}</p>
+                <p className="text-emerald-100 text-lg">{result.aiAnalysis.top_priority}</p>
                 {result.aiAnalysis.encouragement && (
                   <p className="mt-4 pt-4 border-t border-white border-opacity-20 italic font-medium">
                     "{result.aiAnalysis.encouragement}"
@@ -351,6 +356,7 @@ const MoneyScore = () => {
             Retake Quiz
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
