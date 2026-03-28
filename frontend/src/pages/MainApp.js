@@ -104,7 +104,7 @@ function MainApp() {
 
     try {
       const formData = { age, income: monthlyIncome, expenses: monthlyExpenses, savings: currentSavings, goal: financialGoal, risk: riskAppetite };
-      const aiResponse = await fetch('http://localhost:5000/api/ai/analyze', {
+      const aiResponse = await fetch('http://localhost:5001/api/ai/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formData }),
@@ -137,7 +137,7 @@ function MainApp() {
       // Save plan to database
       const user = JSON.parse(localStorage.getItem('user'));
       if (user && user.id) {
-        await fetch('http://localhost:5000/api/plans', {
+        await fetch('http://localhost:5001/api/plans', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

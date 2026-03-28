@@ -7,12 +7,17 @@ require('dotenv').config();
 const pool = require('./config/db');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:3000", "http://localhost:5173"],
+  credentials: true
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 const HF_TOKEN = (process.env.HF_TOKEN || '').trim();
 const JWT_SECRET = (process.env.JWT_SECRET || 'vittora_secret_123').trim();
+
+console.log("Server starting...");
 
 // --- AUTH ROUTES ---
 app.post('/api/signup', async (req, res) => {
@@ -79,7 +84,7 @@ Respond ONLY with JSON:
     const response = await axios.post(
       'https://router.huggingface.co/v1/chat/completions',
       {
-        model: 'mistralai/Mistral-7B-Instruct-v0.2',
+        model: 'Qwen/Qwen2.5-72B-Instruct',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 1200,
         temperature: 0.3,
@@ -95,39 +100,101 @@ Respond ONLY with JSON:
     res.json(JSON.parse(jsonMatch[0]));
   } catch (error) {
     console.error('AI analysis failed:', error.response ? error.response.data : error.message);
-    res.status(500).json({ 
-      error: 'AI analysis failed', 
-      details: error.response?.data?.error || error.message 
+    res.status(500).json({
+      error: 'AI analysis failed',
+      details: error.response?.data?.error || error.message
     });
   }
 });
 
+function calculateTaxes(formData) {
+  const basic = Number(formData.basic) || 0;
+  const hra = Number(formData.hra) || 0;
+  const special = Number(formData.special) || 0;
+  const sec80cRaw = Number(formData.section80c) || 0;
+  const sec80dRaw = Number(formData.section80d) || 0;
+  
+  const totalIncome = basic + hra + special;
+  const actual80c = Math.min(sec80cRaw, 150000);
+  const actual80d = Math.min(sec80dRaw, 25000);
+  const stdDeduction = 50000;
+  
+  // Old Regime Taxable
+  let oldTaxable = totalIncome - actual80c - actual80d - stdDeduction;
+  if(oldTaxable < 0) oldTaxable = 0;
+  
+  // Old Regime Calculation
+  let oldTax = 0;
+  if (oldTaxable > 1000000) {
+    oldTax += (oldTaxable - 1000000) * 0.3 + 112500;
+  } else if (oldTaxable > 500000) {
+    oldTax += (oldTaxable - 500000) * 0.2 + 12500;
+  } else if (oldTaxable > 250000) {
+    oldTax += (oldTaxable - 250000) * 0.05;
+  }
+  if(oldTaxable <= 500000) oldTax = 0; // 87A rebate
+  
+  // New Regime Taxable (only std deduction applies)
+  let newTaxable = totalIncome - stdDeduction;
+  if(newTaxable < 0) newTaxable = 0;
+  
+  // New Regime Calculation (FY 2024-25)
+  let newTax = 0;
+  if (newTaxable > 1500000) {
+      newTax += (newTaxable - 1500000) * 0.3 + 150000;
+  } else if (newTaxable > 1200000) {
+      newTax += (newTaxable - 1200000) * 0.2 + 90000;
+  } else if (newTaxable > 900000) {
+      newTax += (newTaxable - 900000) * 0.15 + 45000;
+  } else if (newTaxable > 600000) {
+      newTax += (newTaxable - 600000) * 0.1 + 15000;
+  } else if (newTaxable > 300000) {
+      newTax += (newTaxable - 300000) * 0.05;
+  }
+  if(newTaxable <= 700000) newTax = 0; // 87A rebate
+
+  const oldTotalDeductions = actual80c + actual80d + stdDeduction;
+  const newTotalDeductions = stdDeduction;
+  
+  const bestRegime = oldTax <= newTax ? "old" : "new";
+  const savings = Math.abs(oldTax - newTax);
+  
+  return {
+    income: totalIncome,
+    old_regime: { taxable_income: oldTaxable, tax_payable: oldTax, deductions_used: oldTotalDeductions },
+    new_regime: { taxable_income: newTaxable, tax_payable: newTax, deductions_used: newTotalDeductions },
+    recommended: bestRegime,
+    savings: savings
+  };
+}
+
+app.post('/api/tax/calculate', (req, res) => {
+  const { formData } = req.body;
+  const taxData = calculateTaxes(formData || {});
+  res.json(taxData);
+});
+
 app.post('/api/ai/analyze-tax', async (req, res) => {
   const { formData } = req.body;
-  const prompt = `You are a certified tax advisor in India.
-User salary details:
-- Basic salary: ₹${formData.basic} per year
-- HRA received: ₹${formData.hra} per year
-- Special allowance: ₹${formData.special} per year
-- 80C investments: ₹${formData.section80c}
-- 80D health insurance: ₹${formData.section80d}
+  const taxData = calculateTaxes(formData || {});
+  
+  const prompt = `User income: ₹${taxData.income}, old regime tax: ₹${taxData.old_regime.tax_payable}, new regime tax: ₹${taxData.new_regime.tax_payable}.
+Explain which tax regime is better and suggest how to reduce tax legally in India. 
+Keep reasoning simple and actionable (max 5-6 lines). 
 
-Respond ONLY with JSON:
+Respond ONLY as valid JSON:
 {
-  "old_regime": { "taxable_income": 800000, "tax_payable": 75000, "deductions_used": 150000 },
-  "new_regime": { "taxable_income": 950000, "tax_payable": 55000, "deductions_used": 0 },
-  "recommended": "new",
-  "savings": 20000,
-  "summary": "The new regime saves you ₹20,000 in tax this year."
+  "explanation": "...",
+  "suggestions": ["..."]
 }`;
 
   try {
     const response = await axios.post(
       'https://router.huggingface.co/v1/chat/completions',
       {
-        model: 'mistralai/Mistral-7B-Instruct-v0.2',
+        model: 'Qwen/Qwen2.5-72B-Instruct',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 1000,
+        max_tokens: 500,
         temperature: 0.3,
       },
       {
@@ -138,10 +205,22 @@ Respond ONLY with JSON:
     const text = response.data.choices?.[0]?.message?.content;
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error("No JSON found in response");
-    res.json(JSON.parse(jsonMatch[0]));
+    
+    // Mix AI suggestions with deterministic math calculations
+    const aiData = JSON.parse(jsonMatch[0]);
+    res.json({
+        ...taxData,
+        ai_advice: aiData.explanation,
+        ai_suggestions: aiData.suggestions || []
+    });
   } catch (error) {
     console.error('Tax AI analysis failed:', error.response ? error.response.data : error.message);
-    res.status(500).json({ error: 'Tax AI analysis failed' });
+    // If AI fails gracefully fallback to Math defaults
+    res.json({
+        ...taxData,
+        ai_advice: "AI couldn't generate advice right now. Please rely on the basic calculations.",
+        ai_suggestions: ["Take advantage of 80C by investing in ELSS or PPF.", "Claim 80D for family health insurance."]
+    });
   }
 });
 
@@ -228,4 +307,6 @@ app.get('/api/plans/:user_id', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

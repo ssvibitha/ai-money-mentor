@@ -113,7 +113,7 @@ const MoneyScore = () => {
     const { score, dimensions } = calculateScore();
     
     try {
-      const res = await axios.post('http://localhost:5000/api/ai/analyze-score', {
+      const res = await axios.post('http://localhost:5001/api/ai/analyze-score', {
         score,
         dimensions
       });

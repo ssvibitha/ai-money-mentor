@@ -229,7 +229,7 @@ export default function FIREPlanner() {
     setSaved(false);
 
     try {
-      const response = await fetch('http://localhost:5000/api/ai/analyze', {
+      const response = await fetch('http://localhost:5001/api/ai/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formData: form }),
@@ -268,7 +268,7 @@ export default function FIREPlanner() {
     if (!isLoggedIn) return;
     setSaveLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/plans', {
+      const response = await fetch('http://localhost:5001/api/plans', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
