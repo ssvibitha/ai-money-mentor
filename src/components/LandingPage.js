@@ -129,9 +129,13 @@ const LandingPage = () => {
           {/* CENTER: PRODUCT LINKS */}
           <div className="footer-section footer-links">
             <h4 className="footer-heading">Product</h4>
+            <br />
             <Link to="/" className="footer-link">Home</Link>
+            <br />
             <Link to="/fire" className="footer-link">FIRE Planner</Link>
+            <br />
             <Link to="/tax" className="footer-link">Tax Wizard</Link>
+            <br />
             <Link to="/dashboard" className="footer-link">Health Score</Link>
           </div>
 
