@@ -23,6 +23,7 @@ const Navbar = () => {
         </Link>
         
         <div className="nav-links">
+          <Link to="/" className="nav-link">Home</Link>
           <Link to="/fire" className="nav-link">FIRE Planner</Link>
           <Link to="/tax" className="nav-link">Tax Wizard</Link>
           <Link to="/score" className="nav-link">Money Score</Link>
