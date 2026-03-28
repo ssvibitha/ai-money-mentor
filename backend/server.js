@@ -146,15 +146,37 @@ Respond ONLY with JSON:
 });
 
 app.post('/api/ai/analyze-score', async (req, res) => {
-  const { score, answers } = req.body;
-  const prompt = `You are a financial health coach.
-A user has a Money Health Score of ${score}/100 based on these answers:
-${Object.entries(answers).map(([id, val]) => `Q${id}: ${val}`).join('\n')}
+  const { score, dimensions } = req.body;
+  const prompt = `You are a certified financial wellness advisor in India.
 
-Respond ONLY with JSON:
+A user completed a financial health assessment with these results:
+- Emergency Fund: ${dimensions.emergency_fund.answer} -> ${dimensions.emergency_fund.points} points out of 20
+- Insurance: ${dimensions.insurance.answer} -> ${dimensions.insurance.points} points out of 15
+- Investments: ${dimensions.investments.answer} -> ${dimensions.investments.points} points out of 20
+- Debt: ${dimensions.debt.answer} -> ${dimensions.debt.points} points out of 15
+- Tax Efficiency: ${dimensions.tax_efficiency.answer} -> ${dimensions.tax_efficiency.points} points out of 15
+- Retirement Planning: ${dimensions.retirement.answer} -> ${dimensions.retirement.points} points out of 15
+
+Overall score: ${score} out of 100
+
+For each dimension where they scored less than 70% of max points, 
+give one specific, actionable recommendation in simple language 
+an Indian saver would understand.
+
+Respond ONLY as valid JSON:
+
 {
-  "summary": "Your score of ${score} shows you have a solid foundation. To reach 100, focus on [X] and [Y].",
-  "recommendations": ["Build emergency fund", "Get health insurance"]
+  "overall_rating": "...",
+  "recommendations": {
+    "emergency_fund": "... or null",
+    "insurance": "... or null",
+    "investments": "... or null",
+    "debt": "... or null",
+    "tax_efficiency": "... or null",
+    "retirement": "... or null"
+  },
+  "top_priority": "...",
+  "encouragement": "..."
 }`;
 
   try {
@@ -163,7 +185,7 @@ Respond ONLY with JSON:
       {
         model: 'mistralai/Mistral-7B-Instruct-v0.2',
         messages: [{ role: 'user', content: prompt }],
-        max_tokens: 800,
+        max_tokens: 1000,
         temperature: 0.3,
       },
       {
