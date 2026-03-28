@@ -112,57 +112,56 @@ const LandingPage = () => {
       </section>
 
       {/* FOOTER */}
-      {/* FOOTER */}
-<footer className="footer">
-  <div className="footer-content">
+      <footer className="footer">
+        <div className="footer-content">
 
-    {/* LEFT: BRAND */}
-    <div className="footer-section footer-left">
-      <div className="footer-brand">
-        <img src="/logo.jpeg" alt="Vittora Logo" className="footer-logo" />
-        <span className="footer-name">Vittora</span>
-      </div>
-      <p className="footer-tagline">
-        AI-powered financial planning for smarter, data-driven decisions.
-      </p>
-    </div>
+          {/* LEFT: BRAND */}
+          <div className="footer-section footer-left">
+            <div className="footer-brand">
+              <img src="/logo.jpeg" alt="Vittora Logo" className="footer-logo" />
+              <span className="footer-name">Vittora</span>
+            </div>
+            <p className="footer-tagline">
+              AI-powered financial planning for smarter, data-driven decisions.
+            </p>
+          </div>
 
-    {/* CENTER: PRODUCT LINKS */}
-    <div className="footer-section footer-links">
-      <h4 className="footer-heading">Product</h4>
-      <Link to="/" className="footer-link">Home</Link>
-      <Link to="/fire" className="footer-link">FIRE Planner</Link>
-      <Link to="/tax" className="footer-link">Tax Wizard</Link>
-      <Link to="/dashboard" className="footer-link">Health Score</Link>
-    </div>
+          {/* CENTER: PRODUCT LINKS */}
+          <div className="footer-section footer-links">
+            <h4 className="footer-heading">Product</h4>
+            <Link to="/" className="footer-link">Home</Link>
+            <Link to="/fire" className="footer-link">FIRE Planner</Link>
+            <Link to="/tax" className="footer-link">Tax Wizard</Link>
+            <Link to="/dashboard" className="footer-link">Health Score</Link>
+          </div>
 
-    {/* CENTER: COMPANY LINKS */}
-    <div className="footer-section footer-links">
-      <h4 className="footer-heading">Company</h4>
-      <a href="#" className="footer-link">About Us</a>
-      <a href="#" className="footer-link">Careers</a>
-      <a href="#" className="footer-link">Contact</a>
-    </div>
+          {/* CENTER: COMPANY LINKS
+          <div className="footer-section footer-links">
+            <h4 className="footer-heading">Company</h4>
+            <a href="#" className="footer-link">About Us</a>
+            <a href="#" className="footer-link">Careers</a>
+            <a href="#" className="footer-link">Contact</a>
+          </div> */}
 
-    {/* RIGHT: LEGAL */}
-    <div className="footer-section footer-links">
-      <h4 className="footer-heading">Legal</h4>
-      <a href="#" className="footer-link">Terms & Conditions</a>
-      <a href="#" className="footer-link">Privacy Policy</a>
-      <a href="#" className="footer-link">Disclaimer</a>
-    </div>
+          {/* RIGHT: LEGAL
+          <div className="footer-section footer-links">
+            <h4 className="footer-heading">Legal</h4>
+            <a href="#" className="footer-link">Terms & Conditions</a>
+            <a href="#" className="footer-link">Privacy Policy</a>
+            <a href="#" className="footer-link">Disclaimer</a>
+          </div> */}
 
-  </div>
+        </div>
 
-  {/* BOTTOM BAR */}
-  <div className="footer-bottom">
-    <span>© {new Date().getFullYear()} Vittora. All rights reserved.</span>
-    <br />
-    <span className="footer-disclaimer">
-      This platform is intended for informational purposes only and does not constitute financial advice.
-    </span>
-  </div>
-</footer>
+        {/* BOTTOM BAR */}
+        <div className="footer-bottom">
+          <span>© 2026 Vittora</span>
+          <br />
+          <span className="footer-disclaimer">
+            This platform is intended for informational purposes only and does not constitute financial advice.
+          </span>
+        </div>
+      </footer>
     </div>
   );
 };
