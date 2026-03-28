@@ -85,7 +85,7 @@ const Footer = () => {
         {/* COPYRIGHT */}
         <div className="footer-bottom">
           <span className="copyright">
-            © {new Date().getFullYear()} Vittora. All rights reserved.
+            © {new Date().getFullYear()} Vittora
           </span>
         </div>
 
