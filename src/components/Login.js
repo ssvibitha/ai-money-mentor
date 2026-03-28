@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -18,6 +19,11 @@ const Login = ({ onLogin }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-softgreen to-white flex items-center justify-center px-4">
       <div className="bg-white rounded-2xl shadow-soft p-8 max-w-md w-full">
+        <div className="mb-4">
+          <Link to="/" className="text-primary hover:underline text-sm flex items-center">
+            ← Back to home
+          </Link>
+        </div>
         <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Login to Your Account</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
