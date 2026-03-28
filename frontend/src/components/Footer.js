@@ -9,7 +9,7 @@ const Footer = () => {
     { name: "Home", path: "/" },
     { name: "FIRE Planner", path: "/fire" },
     { name: "Tax Wizard", path: "/tax" },
-    { name: "Health Score", path: "/dashboard" },
+    { name: "Money Score", path: "/dashboard" },
   ];
 
   const isActive = (path) => {
