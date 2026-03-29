@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../apiConfig';
 import Navbar from '../components/Navbar';
@@ -85,7 +85,7 @@ const MoneyScore = () => {
       ...answers,
       [questionId]: option,
     });
-    
+
     // Auto-advance after a short delay
     if (currentStep < questions.length - 1) {
       setTimeout(() => setCurrentStep(currentStep + 1), 400);
@@ -95,7 +95,7 @@ const MoneyScore = () => {
   const calculateScore = () => {
     let total = 0;
     const dimensions = {};
-    
+
     questions.forEach(q => {
       const selectedOption = answers[q.id];
       const points = selectedOption ? selectedOption.points : 0;
@@ -106,20 +106,20 @@ const MoneyScore = () => {
         maxPoints: q.maxPoints
       };
     });
-    
+
     return { score: total, dimensions };
   };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
     const { score, dimensions } = calculateScore();
-    
+
     try {
       const res = await axios.post(`${API_BASE_URL}/api/ai/analyze-score`, {
         score,
         dimensions
       });
-      
+
       setResult({
         score,
         dimensions,
@@ -159,79 +159,78 @@ const MoneyScore = () => {
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <Navbar />
         <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
-          
-          <div className="bg-emerald-600 px-6 py-8 text-center text-white">
-            <h1 className="text-3xl font-extrabold tracking-tight">Money Health Score</h1>
-            <p className="mt-2 text-emerald-200">Take this 60-second quiz to discover your financial wellness.</p>
-          </div>
+          <div className="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden fade-in">
 
-          <div className="p-8">
-            <div className="mb-8">
-              <div className="flex justify-between text-sm font-medium text-gray-500 mb-2">
-                <span>Step {currentStep + 1} of {questions.length}</span>
-                <span>{Math.round(((currentStep + 1) / questions.length) * 100)}%</span>
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className="bg-emerald-600 h-2 rounded-full transition-all duration-300 ease-out" 
-                  style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
-                ></div>
-              </div>
+            <div className="bg-emerald-600 px-6 py-8 text-center text-white">
+              <h1 className="text-3xl font-extrabold tracking-tight">Money Health Score</h1>
+              <p className="mt-2 text-emerald-200">Take this 60-second quiz to discover your financial wellness.</p>
             </div>
 
-            <div key={q.id} className="slide-up">
-              <h2 className="text-sm font-semibold text-emerald-600 tracking-wide uppercase">{q.title}</h2>
-              <h3 className="mt-2 text-2xl font-bold text-gray-900 mb-6">{q.question}</h3>
-              
-              <div className="space-y-3">
-                {q.options.map((opt, idx) => (
+            <div className="p-8">
+              <div className="mb-8">
+                <div className="flex justify-between text-sm font-medium text-gray-500 mb-2">
+                  <span>Step {currentStep + 1} of {questions.length}</span>
+                  <span>{Math.round(((currentStep + 1) / questions.length) * 100)}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-emerald-600 h-2 rounded-full transition-all duration-300 ease-out"
+                    style={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              <div key={q.id} className="slide-up">
+                <h2 className="text-sm font-semibold text-emerald-600 tracking-wide uppercase">{q.title}</h2>
+                <h3 className="mt-2 text-2xl font-bold text-gray-900 mb-6">{q.question}</h3>
+
+                <div className="space-y-3">
+                  {q.options.map((opt, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => handleOptionSelect(q.id, opt)}
+                      className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all duration-200 option-card ${answers[q.id]?.text === opt.text
+                          ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
+                          : 'border-gray-200 hover:border-emerald-300 text-gray-700'
+                        }`}
+                    >
+                      <span className="font-medium">{opt.text}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-10 flex justify-between items-center">
+                <button
+                  onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+                  disabled={currentStep === 0}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                >
+                  ← Back
+                </button>
+
+                {isLastStep ? (
                   <button
-                    key={idx}
-                    onClick={() => handleOptionSelect(q.id, opt)}
-                    className={`w-full text-left px-5 py-4 rounded-xl border-2 transition-all duration-200 option-card ${
-                      answers[q.id]?.text === opt.text
-                        ? 'border-emerald-600 bg-emerald-50 text-emerald-700'
-                        : 'border-gray-200 hover:border-emerald-300 text-gray-700'
-                    }`}
+                    onClick={handleSubmit}
+                    disabled={!allAnswered || isSubmitting}
+                    className="flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
                   >
-                    <span className="font-medium">{opt.text}</span>
+                    {isSubmitting ? (
+                      <><svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...</>
+                    ) : "Calculate My Score"}
                   </button>
-                ))}
+                ) : (
+                  <button
+                    onClick={() => setCurrentStep(currentStep + 1)}
+                    disabled={!answers[q.id]}
+                    className="px-6 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                  >
+                    Next
+                  </button>
+                )}
               </div>
             </div>
-
-            <div className="mt-10 flex justify-between items-center">
-              <button
-                onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
-                disabled={currentStep === 0}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 disabled:opacity-50"
-              >
-                ← Back
-              </button>
-              
-              {isLastStep ? (
-                <button
-                  onClick={handleSubmit}
-                  disabled={!allAnswered || isSubmitting}
-                  className="flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50 transition-colors"
-                >
-                  {isSubmitting ? (
-                    <><svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...</>
-                  ) : "Calculate My Score"}
-                </button>
-              ) : (
-                <button
-                  onClick={() => setCurrentStep(currentStep + 1)}
-                  disabled={!answers[q.id]}
-                  className="px-6 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
-                >
-                  Next
-                </button>
-              )}
-            </div>
           </div>
-        </div>
         </div>
       </div>
     );
@@ -249,115 +248,115 @@ const MoneyScore = () => {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Navbar />
       <div className="flex-1 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto space-y-8 fade-in">
-        
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Your Money Health Report</h1>
-          <p className="text-lg text-gray-600">A detailed analysis of your financial foundation.</p>
-        </div>
+        <div className="max-w-4xl mx-auto space-y-8 fade-in">
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Main Score Card */}
-          <div className="col-span-1 bg-white rounded-3xl shadow-xl p-8 flex flex-col items-center justify-center transform transition duration-500 hover:scale-[1.02]">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Overall Score</h2>
-            <div className="relative flex items-center justify-center w-full mb-6">
-              <svg width={size} height={size} className="score-ring transform -rotate-90">
-                <circle
-                  cx={size / 2}
-                  cy={size / 2}
-                  r={radius}
-                  stroke="#e5e7eb"
-                  strokeWidth={strokeWidth}
-                  fill="none"
-                />
-                <circle
-                  cx={size / 2}
-                  cy={size / 2}
-                  r={radius}
-                  stroke={band.ring}
-                  strokeWidth={strokeWidth}
-                  strokeLinecap="round"
-                  fill="none"
-                  strokeDasharray={circumference}
-                  strokeDashoffset={offset}
-                  style={{ transition: 'stroke-dashoffset 2s ease-out' }}
-                />
-              </svg>
-              <div className="absolute flex flex-col items-center">
-                <span className="text-5xl font-black text-gray-900 mb-1">{result.score}</span>
-                <div className={`px-3 py-1 rounded-full font-bold text-xs ${band.bg} ${band.color}`}>
-                  {band.text}
+          <div className="text-center mb-10">
+            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">Your Money Health Report</h1>
+            <p className="text-lg text-gray-600">A detailed analysis of your financial foundation.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Main Score Card */}
+            <div className="col-span-1 bg-white rounded-3xl shadow-xl p-8 flex flex-col items-center justify-center transform transition duration-500 hover:scale-[1.02]">
+              <h2 className="text-xl font-bold text-gray-800 mb-6">Overall Score</h2>
+              <div className="relative flex items-center justify-center w-full mb-6">
+                <svg width={size} height={size} className="score-ring transform -rotate-90">
+                  <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke="#e5e7eb"
+                    strokeWidth={strokeWidth}
+                    fill="none"
+                  />
+                  <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    stroke={band.ring}
+                    strokeWidth={strokeWidth}
+                    strokeLinecap="round"
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    style={{ transition: 'stroke-dashoffset 2s ease-out' }}
+                  />
+                </svg>
+                <div className="absolute flex flex-col items-center">
+                  <span className="text-5xl font-black text-gray-900 mb-1">{result.score}</span>
+                  <div className={`px-3 py-1 rounded-full font-bold text-xs ${band.bg} ${band.color}`}>
+                    {band.text}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* AI Insights & Dimensions */}
+            <div className="col-span-1 md:col-span-2 space-y-8">
+              {/* Top Priority */}
+              {result.aiAnalysis?.top_priority && (
+                <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 shadow-lg text-white slide-up" style={{ animationDelay: '0.1s' }}>
+                  <div className="flex items-center mb-3">
+                    <span className="text-2xl mr-3">⭐</span>
+                    <h3 className="text-xl font-bold">Top Priority</h3>
+                  </div>
+                  <p className="text-emerald-100 text-lg">{result.aiAnalysis.top_priority}</p>
+                  {result.aiAnalysis.encouragement && (
+                    <p className="mt-4 pt-4 border-t border-white border-opacity-20 italic font-medium">
+                      "{result.aiAnalysis.encouragement}"
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Dimension Breakdown */}
+              <div className="bg-white rounded-3xl shadow-xl p-8 slide-up" style={{ animationDelay: '0.2s' }}>
+                <h3 className="text-xl font-bold text-gray-900 mb-6">Dimension Breakdown</h3>
+                <div className="space-y-6">
+                  {questions.map((q) => {
+                    const dim = result.dimensions[q.id];
+                    const percentage = (dim.points / dim.maxPoints) * 100;
+                    const isWeak = percentage < 70;
+                    const recommendation = result.aiAnalysis?.recommendations?.[q.id];
+
+                    return (
+                      <div key={q.id} className="relative">
+                        <div className="flex justify-between items-end mb-2">
+                          <div>
+                            <span className="font-semibold text-gray-800 block">{q.title}</span>
+                            <span className="text-sm text-gray-500">{dim.answer}</span>
+                          </div>
+                          <span className="text-sm font-bold text-gray-900">{dim.points}/{dim.maxPoints} pts</span>
+                        </div>
+                        <div className="w-full bg-gray-100 rounded-full h-2.5">
+                          <div
+                            className={`h-2.5 rounded-full progress-bar-fill ${isWeak ? 'bg-amber-400' : 'bg-green-500'}`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                        {isWeak && recommendation && recommendation !== "null" && (
+                          <div className="mt-3 bg-amber-50 text-amber-800 text-sm p-3 rounded-lg flex items-start">
+                            <span className="mr-2">💡</span>
+                            <p>{typeof recommendation === 'string' ? recommendation : JSON.stringify(recommendation)}</p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* AI Insights & Dimensions */}
-          <div className="col-span-1 md:col-span-2 space-y-8">
-            {/* Top Priority */}
-            {result.aiAnalysis?.top_priority && (
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 shadow-lg text-white slide-up" style={{ animationDelay: '0.1s' }}>
-                <div className="flex items-center mb-3">
-                  <span className="text-2xl mr-3">⭐</span>
-                  <h3 className="text-xl font-bold">Top Priority</h3>
-                </div>
-                <p className="text-emerald-100 text-lg">{result.aiAnalysis.top_priority}</p>
-                {result.aiAnalysis.encouragement && (
-                  <p className="mt-4 pt-4 border-t border-white border-opacity-20 italic font-medium">
-                    "{result.aiAnalysis.encouragement}"
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Dimension Breakdown */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 slide-up" style={{ animationDelay: '0.2s' }}>
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Dimension Breakdown</h3>
-              <div className="space-y-6">
-                {questions.map((q) => {
-                  const dim = result.dimensions[q.id];
-                  const percentage = (dim.points / dim.maxPoints) * 100;
-                  const isWeak = percentage < 70;
-                  const recommendation = result.aiAnalysis?.recommendations?.[q.id];
-                  
-                  return (
-                    <div key={q.id} className="relative">
-                      <div className="flex justify-between items-end mb-2">
-                        <div>
-                          <span className="font-semibold text-gray-800 block">{q.title}</span>
-                          <span className="text-sm text-gray-500">{dim.answer}</span>
-                        </div>
-                        <span className="text-sm font-bold text-gray-900">{dim.points}/{dim.maxPoints} pts</span>
-                      </div>
-                      <div className="w-full bg-gray-100 rounded-full h-2.5">
-                        <div 
-                          className={`h-2.5 rounded-full progress-bar-fill ${isWeak ? 'bg-amber-400' : 'bg-green-500'}`}
-                          style={{ width: `${percentage}%` }}
-                        ></div>
-                      </div>
-                      {isWeak && recommendation && recommendation !== "null" && (
-                        <div className="mt-3 bg-amber-50 text-amber-800 text-sm p-3 rounded-lg flex items-start">
-                          <span className="mr-2">💡</span>
-                          <p>{typeof recommendation === 'string' ? recommendation : JSON.stringify(recommendation)}</p>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+          <div className="text-center mt-8 pb-12">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-8 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
+            >
+              Retake Quiz
+            </button>
           </div>
         </div>
-
-        <div className="text-center mt-8 pb-12">
-          <button 
-            onClick={() => window.location.reload()}
-            className="px-8 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors shadow-sm"
-          >
-            Retake Quiz
-          </button>
-        </div>
-      </div>
       </div>
     </div>
   );

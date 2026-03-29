@@ -11,14 +11,13 @@ import {
   CartesianGrid,
   XAxis,
   YAxis,
-  Legend,
-  BarChart,
-  Bar,
+  Legend
 } from 'recharts';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+
 
 const riskProfiles = {
   Low: {
@@ -76,17 +75,16 @@ const calculateMilestones = (params) => {
 };
 
 function MainApp() {
-  const [age, setAge] = useState('25');
+  const [age] = useState('25');
   const [monthlyIncome, setMonthlyIncome] = useState('80000');
   const [monthlyExpenses, setMonthlyExpenses] = useState('45000');
   const [currentSavings, setCurrentSavings] = useState('200000');
   const [financialGoal, setFinancialGoal] = useState('15000000');
   const [riskAppetite, setRiskAppetite] = useState('Medium');
   const [result, setResult] = useState(null);
-  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const [progressMessage, setProgressMessage] = useState('');
-
   const monthlySaving = useMemo(() => {
     const income = Number(monthlyIncome) || 0;
     const expenses = Number(monthlyExpenses) || 0;
@@ -185,6 +183,17 @@ function MainApp() {
           >
             {isLoading ? 'Processing...' : 'Generate New Plan'}
           </button>
+          {
+            error && (
+              <p className="text-red-500 mt-2">{error}</p>
+            )
+          }
+
+          {
+            progressMessage && isLoading && (
+              <p className="text-sm text-gray-500 mt-2">{progressMessage}</p>
+            )
+          }
         </section>
 
         <section id="planner" className="mt-8 grid gap-6 lg:grid-cols-3">
@@ -224,8 +233,8 @@ function MainApp() {
                 <option>Medium</option>
                 <option>High</option>
               </select>
-              <button 
-                onClick={onGeneratePlan} 
+              <button
+                onClick={onGeneratePlan}
                 className="w-full py-2 bg-[#1D9E75] text-white font-bold rounded-lg shadow-md mt-4"
               >
                 Update Plan
@@ -280,7 +289,7 @@ function MainApp() {
                     <LineChart data={result.milestones}>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} />
                       <XAxis dataKey="year" />
-                      <YAxis tickFormatter={v => `₹${(v/1000000).toFixed(1)}M`} />
+                      <YAxis tickFormatter={v => `₹${(v / 1000000).toFixed(1)}M`} />
                       <Tooltip formatter={v => `₹${v.toLocaleString()}`} />
                       <Line type="monotone" dataKey="value" stroke="#1D9E75" strokeWidth={3} dot={false} />
                     </LineChart>

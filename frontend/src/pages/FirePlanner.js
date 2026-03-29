@@ -243,7 +243,7 @@ export default function FIREPlanner() {
       // Note: Backend returns { monthly_sip, retirement_age, corpus_needed, asset_allocation, milestones, summary }
       // We also need years_to_goal, corpus_growth, monthly_breakdown for the UI
 
-      const years_to_goal = data.retirement_age - form.age;
+      // const years_to_goal = data.retirement_age - form.age;
 
       // If AI didn't provide growth/breakdown, we can synthesize them or update the backend to provide them.
       // For now, let's assume the backend provides them or we synthesize a simple version.
