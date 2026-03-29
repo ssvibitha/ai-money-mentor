@@ -236,7 +236,14 @@ export default function FIREPlanner() {
         body: JSON.stringify({ formData: form }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        throw new Error(`Server returned an invalid response (might be a timeout or crash). Details: ${responseText || 'Empty response'}`);
+      }
+
       if (!response.ok) throw new Error(data.error || 'AI Analysis failed');
 
       // Map AI response to ensure consistency
