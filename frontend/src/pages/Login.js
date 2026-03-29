@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
+import API_BASE_URL from '../apiConfig';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     try {
-      const response = await fetch('http://localhost:5001/api/login', {
+      const loginUrl = `${API_BASE_URL}/api/login`;
+      const response = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),

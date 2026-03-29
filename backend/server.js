@@ -8,7 +8,7 @@ const pool = require('./config/db');
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173"],
+  origin: ["http://localhost:3000", "http://localhost:5173", /\.vercel\.app$/],
   credentials: true
 }));
 app.use(express.json());
@@ -307,6 +307,10 @@ app.get('/api/plans/:user_id', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import './Signup.css';
+import API_BASE_URL from '../apiConfig';
 
 const Signup = () => {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -17,7 +18,8 @@ const Signup = () => {
     setIsLoading(true);
     
     try {
-      const response = await fetch('http://localhost:5001/api/signup', {
+      const signupUrl = API_BASE_URL ? `${API_BASE_URL}/api/signup` : '/api/signup';
+      const response = await fetch(signupUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

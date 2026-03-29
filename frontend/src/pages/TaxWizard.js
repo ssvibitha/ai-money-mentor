@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_BASE_URL from '../apiConfig';
 import Navbar from '../components/Navbar';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
@@ -21,7 +22,7 @@ const TaxWizard = () => {
     const fetchLiveMath = async () => {
       if (!formData.basic) return;
       try {
-        const response = await fetch('http://localhost:5001/api/tax/calculate', {
+        const response = await fetch(`${API_BASE_URL}/api/tax/calculate`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ formData }),
@@ -56,7 +57,7 @@ const TaxWizard = () => {
     setAiResult(null);
 
     try {
-      const response = await fetch('http://localhost:5001/api/ai/analyze-tax', {
+      const response = await fetch(`${API_BASE_URL}/api/ai/analyze-tax`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formData }),
